@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8" />
+  <title>demo</title>
+  <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
+  	<!--<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">-->
+  <link rel="stylesheet" href="css/style.css">
+  <style type="text/css">
+  	* {margin: 0; padding: 0;}
+  	.floor {
+  		display: none;
+  		position: fixed;
+  		left: 6%;
+  		top: 200px;
+  		width: 50px;
+  	}
+  	@media screen and (max-width:1720px) {
+  		.floor {
+	  		left: 4%;
+	  	}
+  	}
+  	.floor li {
+  		line-height: 50px;
+			text-align: center;
+			border-bottom:solid 2px #fff;
+			list-style: none;
+  	}
+  	.floor li a {
+  		display: block;
+  		background: #45c0fd;
+  		color: #fff;
+  		text-decoration: none;
+  	}
+  	.floor li a.active {
+  		background: #1c6990;
+  	}
+  	.container {width: 1200px; margin: 300px auto; padding-top: 100px; background: #ccc;}
+  	.layer-iterm .title {padding: 20px; background: #aaa; font-size: 24px;}
+  	.layer-iterm .content {height: 600px; background: #fff; font-size: 24px; border: solid 1px red;}
+  	
+  </style>
+</head>
+<body>
+	<ul class="floor">
+		<li><a href="#one" class="active">1</a></li>
+		<li><a href="#two">2</a></li>
+		<li><a href="#three">3</a></li>
+		<li><a href="#four">4</a></li>
+		<li><a href="#five">5</a></li>
+		<li><a href="#six">6</a></li>
+		<li><a href="javascript:;" class="go-top">&uarr;</a></li>
+	</ul>
+	<div class="container">
+		<div class="layer-iterm">
+			<div id="one" class="title">1</div>
+			<div class="content"></div>
+		</div>
+		<div class="layer-iterm">
+			<div id="two" class="title">2</div>
+			<div class="content"></div>
+		</div>
+		<div class="layer-iterm">
+			<div id="three" class="title">3</div>
+			<div class="content"></div>
+		</div>
+		<div class="layer-iterm">
+			<div id="four" class="title">4</div>
+			<div class="content"></div>
+		</div>
+		<div class="layer-iterm">
+			<div id="five" class="title">5</div>
+			<div class="content"></div>
+		</div>
+		<div class="layer-iterm">
+			<div id="six" class="title">6</div>
+			<div class="content"></div>
+		</div>
+	</div>
+	
+</body>
+<script src="js/jquery1.11.3.js"></script>
+<script type="text/javascript">
+	
+
+$(function() {
+	//初始化
+	isHide();
+	isNavActive();
+	
+	$(window).scroll(function(){
+		isHide();
+		isNavActive();
+  });
+	
+	$(window).resize(function(){
+		isHide();
+  });
+  
+  function isNavActive() {
+		var scrollTop = $(document).scrollTop(),
+    		nav = $(".floor"),//楼层
+				layers = $('.container').find('.title'),//每层内容的标题
+				currentId = "",
+				currentLink = null;
+		
+		layers.each(function() {
+			var oLayer = $(this);
+			var itemOffsetTop = oLayer.offset().top;//每层内容的标题到页面顶部的距离
+			if( scrollTop > itemOffsetTop - 100 ) {
+				currentId = "#" + oLayer.attr("id");
+			} else {
+				return false;
+			}
+		});
+		
+		currentLink = nav.find(".active");
+		if(currentId && currentLink.attr("href") != currentId) {
+			currentLink.removeClass("active");
+			nav.find("[href=" + currentId + "]").addClass("active");
+		}
+	}
+  
+  function isHide() {
+  	if( $(document).scrollTop() > 300 && window.innerWidth > 1460) {//宽度小于1460时隐藏(内容宽度为1200)
+			$('.floor').fadeIn(300);
+		}
+		else {
+			$('.floor').fadeOut(300);
+		}
+  }
+  
+  
+  //点击哪个导航,回到哪个楼层
+  navMove();
+  function navMove() {
+		var navItem = $(".floor").find('a').not('.go-top'),//楼层的每个按钮
+				layers = $('.container').find('.title');//每层内容的标题
+		
+		navItem.each(function(index, el) {
+			$(el).click(function(event) {
+				event.preventDefault();//去掉链接的默认事件
+				var itemOffsetTop = layers.eq(index).offset().top;
+				
+				//chrome
+				$(document.body).animate({
+					'scrollTop':itemOffsetTop-1//1px的边框
+				})
+				
+				//ie和firefox
+				$(document.documentElement).animate({
+					'scrollTop':itemOffsetTop-1
+				})
+			})
+		})
+  }
+  
+  
+  //回到顶部
+  goTop();
+  function goTop() {
+  	$('.go-top').click(function() {
+  		//chrome
+			$(document).animate({
+				'scrollTop':0
+			})
+			
+			//ie和firefox
+			$(document).animate({
+				'scrollTop':0
+			})
+  	})
+  }
+  
+  
+
+  
+})
+</script>
+</html>
