@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 ﻿<h1>hello world, henryvan</h1>
+=======
+﻿<h1>hello world, henry</h1>
+>>>>>>> dev
