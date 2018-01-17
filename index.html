@@ -10,7 +10,15 @@
 		</style>
 	</head>
 	<body>
-  		<h3>666</h3>
-		<h3>333</h3>
+  		<select name="" id="test">
+  			<option value="a">1</option>
+  			<option value="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb">2</option>
+  			<option value="3">3</option>
+  		</select>
 	</body>
+	<script type="text/javascript">
+		test.onchange = function() {
+			console.log(this.options[this.options.selectedIndex].value)
+		}
+	</script>
 </html>
